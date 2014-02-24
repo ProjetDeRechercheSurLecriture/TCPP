@@ -1,7 +1,7 @@
 TCPP 
 
 # What is TCPP?
-TCPP is an part of a five research project developed jointly by the Child Phonology Lab - McGill and Université de Montréal - École d'orthophonie et d'audiologie, it was gamified in collaboration with iLanguage Lab LTD to make a modular, user-friendly game which can be used by SLPs to diagnose dyslexia in pre-literate children in Quebec.
+«Ils aiment quoi?» est un test de dépistage visant à détecter les difficultés d'orthographe chez les enfants avant qu'ils n'apprennent à écrire. «Ils aiment quoi?» a été conçu par Drs. Françoise Brosseau-Lapré et Susan Rvachew (Child Phonology Lab, Université McGill)et évalue particulièrement la capacité des enfants à diviser les mots en unités de sons, les phonèmes. «Ils aiment quoi?» est l'un des tests d'une batterie de tests de dépistage des difficultés orthographiques appelé «Phophlo».
 
 # Who can I use TCPP with?
 * TCPP is a Android app and a Chrome app, which means it works on Windows, Mac, Linux, Chromebooks and Android.
