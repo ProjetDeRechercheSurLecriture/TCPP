@@ -17,7 +17,7 @@ var TCPPStimulus = exports.TCPPStimulus = AbstractStimulus.specialize( /** @lend
 	constructor: {
 		value: function TCPPStimulus() {
 			this.super();
-			this.confirmResponseChoiceMessage = "Are you sure?";
+			this.confirmResponseChoiceMessage = "confirm_choice";
 		}
 	},
 
@@ -32,75 +32,68 @@ var TCPPStimulus = exports.TCPPStimulus = AbstractStimulus.specialize( /** @lend
 			var audioPath = this.audioAssetsPath || "missingpath";
 			audioPath += "/";
 
-			var visualImages = stimulus.distractorImages.join(":::").split(":::");
-			visualImages.push(stimulus.targetImage);
-			for (var i = 0; i < visualImages.length; i++) {
-				var filename = visualImages[i];
-				var imagePosition = filename.split("_")[0] % 4;
-				switch (imagePosition) {
-					case 1:
-						stimulus.visualChoiceA = imagePath + filename;
-						break;
-					case 2:
-						stimulus.visualChoiceB = imagePath + filename;
-						break;
-					case 3:
-						stimulus.visualChoiceC = imagePath + filename;
-						break;
-					case 0:
-						stimulus.visualChoiceD = imagePath + filename;
-						break;
-					default:
-						break;
-				}
-			}
-			stimulus.audioFile = audioPath + stimulus.audioFile;
-			stimulus.primeImage = imagePath + stimulus.primeImage;
-			stimulus.audioFileIntroduceTargets = audioPath + stimulus.audioFileIntroduceTargets;
+			this.visualChoiceA = imagePath + stimulus.audioFileIntroduceChoicesTiming.visualChoiceA.imageFile;
+			this.visualChoiceB = imagePath + stimulus.audioFileIntroduceChoicesTiming.visualChoiceB.imageFile;
+			this.visualChoiceC = imagePath + stimulus.audioFileIntroduceChoicesTiming.visualChoiceC.imageFile;
+			this.visualChoiceD = imagePath + stimulus.audioFileIntroduceChoicesTiming.visualChoiceD.imageFile;
+
+			this.audioFile = audioPath + stimulus.prime.carrierAudio;
+			this.primeImage = imagePath + stimulus.prime.imageFile;
+			this.audioFileWhichIntroduceChoices = audioPath + stimulus.audioFileIntroduceChoicesTiming.audioFile;
+			
 			/* Dont draw the images yet, wait until we say its time */
 			this.showVisualTargets = false;
 
-			var cueToShowPrime = stimulus.cueToShowPrime;
-			var self = this;
-
-			setTimeout(function() {
-				self.animateVisualPrime();
-			}, cueToShowPrime);
-
-			var cueToShowTargets = stimulus.cueToShowTargets;
-			setTimeout(function() {
-				self.animateVisualTargets();
-			}, cueToShowTargets);
-
 			this.super(stimulus);
+			this.handleAnimateVisualPrime();
+
+			// this.application.debugMode = true; // TODO control with the audience select
+			if (this.application.currentAudience.key === "debug") {
+				this.handleAnimateVisualTargets();
+			} else {
+				this.application.addEventListener("animateVisualTargets", this);
+				this.application.audioPlayer.addEvent("animateVisualTargets:::" + this.audioFile, "end");
+			}
+
 		}
 	},
 
-	animateVisualPrime: {
+	handleAnimateVisualPrime: {
 		value: function() {
 			console.log("animating visual prime");
-			this.templateObjects.visualPrime.element.parentElement.style.width = "50%";
+			// this.application.removeEventListener("animateVisualPrime", this);
+			this.playAudio();
+
+			this.templateObjects.visualPrime.element.parentElement.style.width = "60%";
+			this.templateObjects.visualPrime.element.parentElement.style["margin-top"] = "-6%";
 			this.templateObjects.visualPrime.element.parentElement.style["-webkit-animation"] = "";
+			this.templateObjects.visualPrime.element.style.opacity = "1";
 		}
 	},
 
-	animateVisualTargets: {
+	handleAnimateVisualTargets: {
 		value: function() {
+			// this.application.removeEventListener("animateVisualTargets", this);
+
+			var self = this;
 			console.log("animating visual targets");
-			this.showVisualTargets = true;
 			this.templateObjects.visualPrime.element.parentElement.style["-webkit-animation"] = "TCPP-stimulus-move-prime ease-in-out 2s";
 			this.templateObjects.visualPrime.element.parentElement.style.width = "19%";
-			this.templateObjects.visualPrime.element.parentElement.style["margin-top"] = "20%";
-			// this.templateObjects.showVisualTargetCondition.element.parentElement.style["-webkit-animation"] = "TCPP-stimulus-move-prime ease-in-out 2s";
-			this.templateObjects.showVisualTargetCondition.element.parentElement.style.width = "50%";
+			this.templateObjects.visualPrime.element.parentElement.style["margin-top"] = "10%";
+			this.templateObjects.visualPrime.element.style.opacity = ".5";
 
-			this.introduceTargetStimuli();
+			window.setTimeout(function() {
+				self.showVisualTargets = true;
+				self.templateObjects.showVisualTargetCondition.element.parentElement.style.width = "60%";
+				self.introduceTargetStimuli();
+
+			}, 2100);
 		}
 	},
 
 	introduceTargetStimuli: {
 		value: function() {
-			this.application.audioPlayer.play(this.audioFileIntroduceTargets);
+			this.application.audioPlayer.play(this.audioFileWhichIntroduceChoices);
 
 			this.templateObjects.visualChoiceA.element.style.opacity = ".3";
 			this.templateObjects.visualChoiceB.element.style.opacity = ".3";
@@ -109,7 +102,7 @@ var TCPPStimulus = exports.TCPPStimulus = AbstractStimulus.specialize( /** @lend
 
 			var self = this;
 			var introduceNext = function(visualTargetId) {
-				var cue = self.audioFileIntroduceTargetsTiming[visualTargetId].delay;
+				var cue = self.audioFileIntroduceChoicesTiming[visualTargetId].delay;
 				window.setTimeout(function() {
 					if (visualTargetId === "done") {
 						self.startWaitingForUserToRespond = Date.now();
@@ -124,13 +117,13 @@ var TCPPStimulus = exports.TCPPStimulus = AbstractStimulus.specialize( /** @lend
 						self.templateObjects.visualChoiceC.element.style["-webkit-animation"] = "";
 						self.templateObjects.visualChoiceD.element.style["-webkit-animation"] = "";
 					} else {
-						var duration = cue/1000 || 1;
-						self.templateObjects[visualTargetId].element.style["-webkit-animation"] = "Introduce-target-image "+duration+"s";
-						introduceNext(self.audioFileIntroduceTargetsTiming[visualTargetId].nextIntroduction);
+						var duration = cue / 1000 || 1;
+						self.templateObjects[visualTargetId].element.style["-webkit-animation"] = "Introduce-target-image " + duration + "s";
+						introduceNext(self.audioFileIntroduceChoicesTiming[visualTargetId].nextIntroduction);
 					}
 				}, cue);
 			};
-			introduceNext(this.audioFileIntroduceFirstTarget);
+			introduceNext(this.audioFileIntroduceChoicesTiming.firstChoice);
 		}
 	}
 });

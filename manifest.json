@@ -1,6 +1,6 @@
 {
   "name": "TCPP alpha",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "description": "",
   "app": {
     "background": {
@@ -20,6 +20,6 @@
   },
 
   "sandbox": {
-    "pages": ["index.html"]
+    "pages": ["index.html", "results.html"]
   }
 }

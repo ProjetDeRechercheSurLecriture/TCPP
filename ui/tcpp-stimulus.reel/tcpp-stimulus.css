@@ -7,6 +7,7 @@
 .Stimulus-prime-image-area {
 	width: 60%;
 	float: left;
+	margin-top: -6%;
 }
 
 .Stimulus-prime-image-area img {
@@ -14,11 +15,12 @@
 }
 
 .Stimulus-content-left {
-	width: 1%;
+	width: 0%;
+	margin-top: -5%;
 }
 
 .Stimulus-content-left img {
-	width: 45%;
+	width: 42%;
 }
 
 .Stimulus-content-right {
@@ -26,23 +28,23 @@
 	float: right;
 }
 
-.Stimulus-content-right img{
+/*.Stimulus-content-right img{
 	width: 49%;
 	float: right;
 	text-align: center;
-}
+}*/
 .Stimulus-choose-area {
 	/*background-color: #FFFFCC;*/
 }
 
 @keyframes TCPP-stimulus-move-prime
 {
-	0%   {width: 60%;}
-	100%  {width: 19%; margin-top:20%;}
+	0%   {width: 60%; margin-top: -6%}
+	100%  {width: 19%; margin-top:10%;}
 }
 
 @-webkit-keyframes TCPP-stimulus-move-prime /* Safari and Chrome */
 {
-	0%   {width: 60%;}
-	100%  {width: 19%; margin-top:20%;}
+	0%   {width: 60%; margin-top: -6%}
+	100%  {width: 19%; margin-top:10%;}
 }
