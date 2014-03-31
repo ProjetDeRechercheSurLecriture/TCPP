@@ -1,7 +1,7 @@
 TCPP 
 
 # What is TCPP?
-«Ils aiment quoi?» est un test de dépistage visant à détecter les difficultés d'orthographe chez les enfants avant qu'ils apprennent à écrire. «Ils aiment quoi?» a été conçu par Drs. Françoise Brosseau-Lapré et Susan Rvachew (Child Phonology Lab, Université McGill)et évalue particulièrement la capacité des enfants à diviser les mots en unités de sons, les phonèmes. «Ils aiment quoi?» est l'un des tests de l'outil de dépistage des difficultés orthographiques appelé «Phophlo».
+« Ils aiment quoi? » est un test visant à dépister les difficultés d'orthographe chez les enfants avant qu'ils apprennent à écrire. « Ils aiment quoi? » a été conçu par les Drs. Françoise Brosseau-Lapré et Susan Rvachew (École des sciences de la communication humaine, Université McGill) et évalue particulièrement la capacité des enfants à percevoir les rimes. « Ils aiment quoi? » est l'un des tests de l'outil de dépistage des difficultés orthographiques « Phophlo ».
 
 # Who can I use TCPP with?
 * TCPP is a Android app and a Chrome app, which means it works on Windows, Mac, Linux, Chromebooks and Android.
